@@ -1,0 +1,13 @@
+.listingscontainer {
+    padding: 40px;
+    text-align: center;
+}
+
+.listing {
+    margin-bottom: 10px;
+    background-color: beige;
+
+}
+.listing:hover {
+    background-color: rgb(245, 245, 204);
+}
