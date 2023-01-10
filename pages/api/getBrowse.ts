@@ -9,6 +9,8 @@ import clientPromise from '../lib/mongodb';
 //     itemType: string,
 // }[] | []
 
+
+// This TypeScript directly accesses mongoDB however we will remove this and access mongoDB via a Python rest API.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>

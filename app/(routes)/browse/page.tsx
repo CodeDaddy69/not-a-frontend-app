@@ -7,12 +7,35 @@ const getBrowse = async () => {
     return await res.json()
 }
 
+// Python backend fetch via flask 
+const getFlask = async () => {
+    const res = await fetch("http://localhost:5000/data");
+    return await res.json()
+}
+
 const BrowsePage = async () => {
 
     const data = await getBrowse();
+    const flaskData = await getFlask();
 
-    if (data.length === 0) return <div>no listings to show</div>
+    if (data.length == 0) {
+        return(
+            <div>
+                <ul>
+                    {flaskData.map((listing) => 
+                    <>
+                    <h1>{listing.Name}</h1>
+                    <h1>{listing.Age}</h1>
+                    <h1>{listing.Date}</h1>
+                    <h1>{listing.programmmin}</h1>
+                    </>
+                    )}
+                </ul>
+            </div>
+        )
+    }
 
+    // In time this will actually be replaced with the above code which fetches the data from python backend 
     return (
         <div className={styles.listingscontainer}>
             <ul>
