@@ -21,8 +21,11 @@ export default async function handler(
         const client = await clientPromise;
         const db = client.db("myApp");
 
+        const dateTime = new Date()
+
         switch (req.method) {
             case "POST":
+                req.body.timeLastAction = dateTime;
                 const insert = (await db.collection("listings").insertOne(req.body)).acknowledged;
                 res.status(200).json(insert ? "success": "failure");
                 break;

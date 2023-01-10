@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from "react";
-import getProgram from "../../../lib/walletContext/getProgram";
+import getProgram from "../../../../lib/walletContext/getProgram";
 import { createListing } from "./createListing";
-import idl from '../../../lib/idl/idl.json';
-import address from '../../../lib/idl/idl_address.json';
+import idl from '../../../../lib/idl/idl.json';
+import address from '../../../../lib/idl/idl_address.json';
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 
 
@@ -35,7 +35,7 @@ const NewListingPage = () => {
             colour: "blue",
             condition: "new",
             saleState: "for sale",
-            seller: program.provider.publicKey?.toBase58()
+            seller: program.provider.publicKey?.toBase58(),
         };
 
         const res = await fetch('/api/listing', {

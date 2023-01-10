@@ -1,5 +1,4 @@
-import styles from '../mylistings/styles/mylistings.module.css'
-import buttonstyles from '../../styles/buttons.module.css';
+import styles from '../account/mylistings/styles/mylistings.module.css'
 import Link from "next/link";
 
 const getBrowse = async () => {

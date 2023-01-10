@@ -1,4 +1,3 @@
-import { BraveWalletAdapter } from '@solana/wallet-adapter-wallets';
 import styles from './styles/mylistings.module.css'
 
 const ListingList = ( { filter, setFilter, data }) => {
