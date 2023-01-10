@@ -31,7 +31,7 @@ export default function RootLayout({
               <li className='inline-block p-4'><Link className={buttons.button} href="/">home</Link></li>
               <li className='inline-block p-4'><Link className={buttons.button} href="/browse">browse</Link></li>
               <li className='inline-block p-4'><Link className={buttons.button} href="/mylistings">my listings</Link></li>
-              <li className='inline-block p-4'><Link className={buttons.button} href="/account/actions">temp actions</Link></li>
+              <li className='inline-block p-4'><Link className={buttons.button} href="/account">account</Link></li>
             </ul>
             {children}
           </WalletContextProvider>

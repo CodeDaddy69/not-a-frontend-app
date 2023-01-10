@@ -8,13 +8,13 @@ import address from '../../../lib/idl/idl_address.json';
 import ActionsListSelling from './components/actionslistselling';
 import ActionsListBuying from "./components/actionslistbuying";
 
-const fetcher = (address: string | undefined) => fetch(`/api/getActions/${address}`).then(res => res.json());
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const ActionsPage = () => {
     
     const wallet = useAnchorWallet();
     const program = getProgram(idl, address.address, wallet);
-    const { data, error, isLoading } = useSWR(wallet?.publicKey.toString(), fetcher);
+    const { data, error, isLoading } = useSWR(`/api/getActions/${wallet?.publicKey.toString()}`, fetcher);
 
     if (!wallet) {
         return (

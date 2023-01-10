@@ -6,6 +6,8 @@ const ActionsListSelling = ( {program, data, isLoading} ) => {
 
     if (isLoading) return <div>loading...</div>
 
+
+    if (data.length === 0 ) return <>no actions to do</>
     const newdata = data.filter((listing) => (listing.seller === program.provider.publicKey.toString()) && Boolean(listing.escrow))
     if (newdata.length === 0 ) return <>no actions to do</>
 

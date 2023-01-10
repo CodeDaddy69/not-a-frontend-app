@@ -8,14 +8,14 @@ import Link from "next/link";
 import { useState } from "react";
 import ListingList from "./listinglist";
 
-const fetcher = (address: string | undefined) => fetch(`/api/getListings/${address}`).then(res => res.json());
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const Listings = () => {
 
     const [filter, setFilter] = useState("all");
 
     const { publicKey } = useWallet();
-    const { data, error, isLoading } = useSWR(publicKey?.toString(), fetcher)
+    const { data, error, isLoading } = useSWR(`/api/getListings/${publicKey?.toString()}`, fetcher)
 
     if (!publicKey) {return (
         <div>

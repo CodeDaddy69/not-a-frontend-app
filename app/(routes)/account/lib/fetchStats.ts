@@ -5,6 +5,7 @@ import { encode } from "@coral-xyz/anchor/dist/cjs/utils/bytes/utf8";
 const fetchStats = async ( program: Program<Idl>, address?: PublicKey ) => {
     
     let account = program.provider.publicKey;
+    let res;
 
     if (address) {
         account = address
@@ -18,13 +19,13 @@ const fetchStats = async ( program: Program<Idl>, address?: PublicKey ) => {
     );
 
     try {
-        const res = await program.account.userStats.fetch(PDA);
+        res = await program.account.userStats.fetch(PDA);
         console.log(res);
     } catch(e) {
         console.log(e)
     }
     
-    return;
+    return res;
 }
  
 export default fetchStats;
