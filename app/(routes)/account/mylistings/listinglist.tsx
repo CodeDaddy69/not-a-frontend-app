@@ -1,5 +1,3 @@
-import styles from './styles/mylistings.module.css'
-
 const ListingList = ( { filter, setFilter, data }) => {
 
     if (!data) return <></>
@@ -20,7 +18,7 @@ const ListingList = ( { filter, setFilter, data }) => {
 
     const list = (typeof showData === "undefined") ? <div>No listings</div> :
      showData.map((listing) => (
-        <li className={styles.listing} key={listing.listing}>
+        <li className="" key={listing.listing}>
             <h1>{listing.listing}</h1>
             <h1 className="font-bold">{listing.name}</h1>
             <h1>${listing.price}</h1>

@@ -2,8 +2,6 @@
 
 import { useWallet } from "@solana/wallet-adapter-react";
 import useSWR from "swr";
-import styles from './styles/mylistings.module.css'
-import buttonstyles from '../../styles/buttons.module.css';
 import Link from "next/link";
 import { useState } from "react";
 import ListingList from "./listinglist";
@@ -25,15 +23,11 @@ const Listings = () => {
 
     if (isLoading) {return <div>loading...</div>} else {
 
-        if (data.length === 0) {return (<div>
-            <div>no listings</div>
-            <Link className={buttonstyles.button} href='/mylistings/newlisting'>Create new listing</Link>
-            </div>)};
-
         return (
-            <div className={styles.listingscontainer}>
-                <ListingList filter={filter} setFilter={setFilter} data={data}/>
-                <Link className={buttonstyles.button} href='/mylistings/newlisting'>Create new listing</Link>
+            <div className="">
+                {(data.length === 0) ? <div>no listings</div> :
+                <ListingList filter={filter} setFilter={setFilter} data={data}/>}
+                <Link className="hover:underline" href='/account/mylistings/newlisting'>Create new listing</Link>
             </div>
         );
     }

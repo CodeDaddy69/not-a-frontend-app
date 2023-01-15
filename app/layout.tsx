@@ -1,6 +1,5 @@
 import './styles/globals.css';
 import './styles/wallet.css';
-import buttons from './styles/buttons.module.css';
 import React from 'react';
 import WalletContextProvider from './components/walletproviders';
 import WalletButton from './components/walletbutton';
@@ -16,6 +15,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
+ 
+
   return (
     <html lang="en" className={albertSans.className}>
       {/*
@@ -24,13 +25,13 @@ export default function RootLayout({
       */}
       <head />
       <body>
-        <div>
+        <div className="space-y-10">
           <WalletContextProvider>
-            <ul>
-              <li className='inline-block p-4'><WalletButton className='wallet-button'/></li>
-              <li className='inline-block p-4'><Link className={buttons.button} href="/">home</Link></li>
-              <li className='inline-block p-4'><Link className={buttons.button} href="/browse">browse</Link></li>
-              <li className='inline-block p-4'><Link className={buttons.button} href="/account">account</Link></li>
+            <ul className="border-b-2 border-black py-2">
+              <li className='inline-block px-4'><WalletButton className='wallet-button'/></li>
+              <li className='inline-block px-4 hover:scale-110 active:scale-100'><Link className="font-semibold" href="/">home</Link></li>
+              <li className='inline-block px-4 hover:scale-110 active:scale-100'><Link className=" font-semibold " href="/browse">browse</Link></li>
+              <li className='inline-block px-4 hover:scale-110 active:scale-100'><Link className="font-semibold" href="/account">account</Link></li>
             </ul>
             {children}
           </WalletContextProvider>
