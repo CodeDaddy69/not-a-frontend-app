@@ -18,7 +18,7 @@ const ListingList = ( { filter, setFilter, data }) => {
 
     const list = (typeof showData === "undefined") ? <div>No listings</div> :
      showData.map((listing) => (
-        <li className="" key={listing.listing}>
+        <li className="bg-amber-100 border-b-2 border-t-2 border-black" key={listing.listing}>
             <h1>{listing.listing}</h1>
             <h1 className="font-bold">{listing.name}</h1>
             <h1>${listing.price}</h1>
@@ -29,15 +29,17 @@ const ListingList = ( { filter, setFilter, data }) => {
         </li>))
 
     return (
-        <>
-            <button className="p-2 hover:underline focus:underline" onClick={() => {setFilter("all")}}>all</button>
-            <button className="p-2 hover:underline focus:underline" onClick={() => {setFilter("for sale")}}>for sale</button>
-            <button className="p-2 hover:underline focus:underline" onClick={() => {setFilter("under sale")}}>under sale</button>
-            <button className="p-2 hover:underline focus:underline" onClick={() => {setFilter("sold")}}>sold</button>
+        <div className='flex-1'>
+            <div className="text-center">
+                <button className="p-2 hover:underline focus:underline" onClick={() => {setFilter("all")}}>all</button>
+                <button className="p-2 hover:underline focus:underline" onClick={() => {setFilter("for sale")}}>for sale</button>
+                <button className="p-2 hover:underline focus:underline" onClick={() => {setFilter("under sale")}}>under sale</button>
+                <button className="p-2 hover:underline focus:underline" onClick={() => {setFilter("sold")}}>sold</button>
+            </div>
             <ul>
                 {list}
             </ul>
-        </>
+        </div>
     );
 }
  

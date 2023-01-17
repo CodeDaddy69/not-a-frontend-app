@@ -45,7 +45,7 @@ const BuyButton = ( { price, listing, seller }: listingProps ) => {
         console.log(res);
     }
      
-    return (<button className=" hover:underline" onClick={handleClick}>Buy now</button>);
+    return (<button className="rounded-full border-black border-2 px-4 hover:scale-110 active:scale-100 font-semibold" onClick={handleClick}>Buy now</button>);
 }
  
 export default BuyButton;
