@@ -24,11 +24,11 @@ const ActionsPage = () => {
     }
 
     return (
-        <div className="flex flex-col 
-        items-center justify-center">
-            <h1>Under sale</h1>
+        <div className="flex-col 
+        items-center justify-center text-center">
+            <h1 className="border-b-2 border-black p-2">under sale</h1>
             <ActionsListSelling program={program} data={data} isLoading={isLoading}/>
-            <h1>Under purchase</h1>
+            <h1 className="border-b-2 border-t-2 border-black p-2">under purchase</h1>
             <ActionsListBuying program={program} data={data} isLoading={isLoading}/>
         </div>
      );

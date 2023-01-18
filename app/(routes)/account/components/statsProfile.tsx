@@ -39,7 +39,7 @@ export default function StatsProfile( ) {
 	}, [isLoading]);
 
     return ( 
-    <div className="flex justify-center space-x-10">
+    <div className="mx-auto flex justify-center space-x-10 p-4 border-2 border-black w-[800px] bg-amber-100">
         {!isLoading ? <>
     <div>purchases: {stats.purchases}</div>
     <div>purchase disputes: {stats.purchaseDisputes}</div>

@@ -22,7 +22,7 @@ export default function AccountPage() {
                     setIsListings(false)
                 }}>actions</button>
             </div>
-            <div className='flex-col border-2 border-black mx-60'>
+            <div className='flex-col border-2 border-black mx-auto w-[800px]'>
                 {isListings ? <Listings /> : <ActionsPage />}
             </div>
         </div>

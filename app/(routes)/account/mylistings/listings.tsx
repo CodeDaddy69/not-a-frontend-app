@@ -27,7 +27,9 @@ const Listings = () => {
             <div className="">
                 {(data.length === 0) ? <div>no listings</div> :
                 <ListingList filter={filter} setFilter={setFilter} data={data}/>}
-                <Link className="hover:underline" href='/account/mylistings/newlisting'>Create new listing</Link>
+                <div className="flex justify-center">
+                    <Link className="font-semibold hover:scale-110 active:scale-100" href='/account/mylistings/newlisting'>Create new listing</Link>
+                </div>
             </div>
         );
     }
