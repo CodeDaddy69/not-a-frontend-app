@@ -1,6 +1,7 @@
 // 'use client'
 
-import updateState from "./lib/updateState";
+import Link from "next/link";
+import updateState from "../lib/updateState";
 
 const ActionButton = ( { program, listing } ) => {
 
@@ -24,12 +25,9 @@ const ActionButton = ( { program, listing } ) => {
             }}>
                 Item Received
             </button>
-            <button className="hover:underline"
-            onClick={() => {
-                handleClick(true)
-            }}>
-                Start Dispute
-            </button>
+            <Link className="font-semibold hover:scale-110 active:scale-100" href={`/account/startdispute/${listing.listing}`}>
+                start dispute
+            </Link>
         </>)
     }
 

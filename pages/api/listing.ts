@@ -2,17 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '../lib/mongodb';
 
-// type Data = {
-//   listing: string,
-//   price: string,
-//   name: string,
-//   itemType: string,
-//   colour: string,
-//   condition: string,
-//   saleState: string,
-//   seller: string
-// } | undefined
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -21,7 +10,9 @@ export default async function handler(
         const client = await clientPromise;
         const db = client.db("myApp");
 
-        const dateTime = new Date()
+        // timeout date
+        const days_to_timeout = 30
+        const dateTime = new Date(Date.now() +(days_to_timeout * 86400000));
 
         switch (req.method) {
             case "POST":

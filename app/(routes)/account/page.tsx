@@ -2,9 +2,9 @@
 
 import StatsProfile from "./components/statsProfile";
 import Link from 'next/link';
-import Listings from './mylistings/listings';
+import Listings from './components/listingsComponent';
 import { useState } from "react";
-import ActionsPage from './actions/page';
+import ActionsPage from './components/actionComponent';
 
 export default function AccountPage() {
 

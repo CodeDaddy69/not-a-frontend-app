@@ -5,8 +5,8 @@ import getProgram from "../../../lib/walletContext/getProgram";
 import useSWR from "swr";
 import idl from '../../../lib/idl/idl.json';
 import address from '../../../lib/idl/idl_address.json';
-import ActionsListSelling from './components/actionslistselling';
-import ActionsListBuying from "./components/actionslistbuying";
+import ActionsListSelling from './actionslistselling';
+import ActionsListBuying from "./actionslistbuying";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
