@@ -25,8 +25,17 @@ export default function StatsProfile( ) {
 
         const data = await fetchStats(program);
         // cast type then:
-        // setStats(data)
+        if (!!data) setStats(data);
+
         // then sync to database
+        const res = await fetch(`/api/setStats/${program.provider.publicKey}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        console.log(res)
     }
 
     const wallet = useAnchorWallet();
@@ -39,7 +48,7 @@ export default function StatsProfile( ) {
 	}, [isLoading]);
 
     return ( 
-    <div className="mx-auto flex justify-center space-x-10 p-4 border-2 border-black w-[800px] bg-amber-100">
+    <div className="mx-auto flex justify-center space-x-10 p-4 border-2 border-black w-[800px] bg-amber-100 shadow-lg">
         {!isLoading ? <>
     <div>purchases: {stats.purchases}</div>
     <div>purchase disputes: {stats.purchaseDisputes}</div>

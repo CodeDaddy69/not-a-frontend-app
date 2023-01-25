@@ -2,13 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from '../lib/mongodb';
 
-// type Data = {
-//     listing: string,
-//     price: string,
-//     name: string,
-//     itemType: string,
-// }[] | []
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -18,7 +11,7 @@ export default async function handler(
         const db = client.db("myApp");
 
         const listings = await db.collection("listings")
-        .find( { saleState : { $ne: "sold" } } )
+        .find( { saleState : { $nin: ["disputed", "sold", "under sale"] } } )
         .limit(10)
         .toArray();
 

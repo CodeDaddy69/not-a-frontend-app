@@ -1,7 +1,5 @@
-// 'use client'
-
 import Link from "next/link";
-import updateState from "../lib/updateState";
+import updateState from "../../lib/updateState";
 
 const ActionButton = ( { program, listing } ) => {
 

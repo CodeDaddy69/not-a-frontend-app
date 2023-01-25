@@ -27,7 +27,7 @@ export default function RootLayout({
       <body>
         <div className="space-y-10">
           <WalletContextProvider>
-            <ul className="border-b-2 border-black py-2 bg-amber-100">
+            <ul className="py-2 bg-amber-100">
               <li className='inline-block px-4'><WalletButton className='wallet-button'/></li>
               <li className='inline-block px-4 hover:scale-110 active:scale-100'><Link className="font-semibold" href="/">home</Link></li>
               <li className='inline-block px-4 hover:scale-110 active:scale-100'><Link className=" font-semibold " href="/browse">browse</Link></li>
