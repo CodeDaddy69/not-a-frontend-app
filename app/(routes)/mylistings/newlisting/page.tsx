@@ -16,9 +16,11 @@ const NewListingPage = () => {
     const [listingName, setListingName] = useState("");
     const [price, setPrice] = useState("0");
     
+    // This is called when the form is filled in by the seller which writes to boockchain and our mongoDB. 
     const handleSubmit = async (e) => {
         if (!program) return;
 
+        // CreateListing actually writes to the blockchain
         e.preventDefault();
         const { isSuccess, PDA } = await createListing({ program, listingName, price});
 
@@ -38,15 +40,15 @@ const NewListingPage = () => {
             seller: program.provider.publicKey?.toBase58()
         };
 
-        const res = await fetch('/api/listing', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(listing),
-          });
-
-        console.log(res.body)
+        const res2 =  fetch(`http://localhost:5000/newlisting`,{
+            'method':'POST',
+             headers : {
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(listing)
+        })
+        .then(response => response.json())
+        .catch(error => console.log(error))
     }
 
 
