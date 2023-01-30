@@ -15,21 +15,56 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'  
 
-  
 # Gets all listings TODO - allow arguments for more advanced searches ie jackets, shoes...
 @app.route('/listings', methods=['GET'])
 def view_listings():
-  
-    if request.method=='GET':
-        current_listings = []
-        # Get all listings and add to list
+
+    current_listings = []
+
+    if request.method == 'GET':
         for listing in appCollection['listings'].find():
+            print("hello")
             new_data =  {
                 "name" : listing["name"],
                 "price" : "£" + str(listing["price"]),
-                "itemType" : listing["itemType"]
+                "itemType" : listing["itemType"],
+                "color" : listing["colour"],
+                "condition" : "£" + str(listing["condition"]),
+                "status" : listing["saleState"]
                 }
             current_listings.append(new_data)
+        return current_listings
+
+# Gets all listings TODO - allow arguments for more advanced searches ie jackets, shoes...
+@app.route('/listings/{address}', methods=['GET'])
+def view_listings_address(address):
+    if request.method=='GET':
+        current_listings = []
+        print(address)
+        # Get all listings and add to list
+        if (len(address)!=0):
+            for listing in appCollection['listings'].find("seller" == address):
+                new_data =  {
+                    "name" : listing["name"],
+                    "price" : "£" + str(listing["price"]),
+                    "itemType" : listing["itemType"],
+                    "color" : listing["colour"],
+                    "condition" : "£" + str(listing["condition"]),
+                    "status" : listing["saleState"]
+                    }
+                current_listings.append(new_data)
+            else:
+                for listing in appCollection['listings'].find():
+                    print("hello")
+                    new_data =  {
+                        "name" : listing["name"],
+                        "price" : "£" + str(listing["price"]),
+                        "itemType" : listing["itemType"],
+                        "color" : listing["colour"],
+                        "condition" : "£" + str(listing["condition"]),
+                        "status" : listing["saleState"]
+                        }
+                    current_listings.append(new_data)
         return current_listings
   
 # Add functionality for POST requests for a new listing...
@@ -40,8 +75,11 @@ def new_listing():
         response.headers.add('Access-Control-Allow-Origin', '*')
         
         # TODO - Add any new listing to the mongoDB!
-
-        return response
+        if (request.data):
+            appCollection['listings'].insert_one(request.json)
+            return response
+        else:
+            return response
     
 # Running app
 if __name__ == '__main__':

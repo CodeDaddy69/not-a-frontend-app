@@ -9,7 +9,7 @@ import { useState } from "react";
 import ListingList from "./listinglist";
 
 const fetcher = (address: string | undefined) => fetch(`/api/getListings/${address}`).then(res => res.json());
-
+console.log(fetcher);
 const Listings = () => {
 
     const [filter, setFilter] = useState("all");

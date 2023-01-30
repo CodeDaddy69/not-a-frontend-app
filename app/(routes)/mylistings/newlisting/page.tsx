@@ -15,6 +15,10 @@ const NewListingPage = () => {
 
     const [listingName, setListingName] = useState("");
     const [price, setPrice] = useState("0");
+    const [itemType, setItemType] = useState("");
+    const [color, setColor] = useState("0");
+    const [condition, setCondition] = useState("");
+    const [saleState, setSaleState] = useState("0");
     
     // This is called when the form is filled in by the seller which writes to boockchain and our mongoDB. 
     const handleSubmit = async (e) => {
@@ -33,10 +37,10 @@ const NewListingPage = () => {
             listing: PDA,
             price: price,
             name: listingName,
-            itemType: "jacket",
-            colour: "blue",
-            condition: "new",
-            saleState: "for sale",
+            itemType: itemType,
+            colour: color,
+            condition: condition,
+            saleState: saleState,
             seller: program.provider.publicKey?.toBase58()
         };
 
@@ -70,6 +74,42 @@ const NewListingPage = () => {
                     required
                     value = {price}
                     onChange={(e) => setPrice(e.target.value)}
+                    className="bg-[#e2e8f0]"
+                    />
+                </div>
+                <div>
+                    <label className="px-2">Item Type:</label>
+                    <input type="text"
+                    required
+                    value = {itemType}
+                    onChange={(e) => setItemType(e.target.value)}
+                    className="bg-[#e2e8f0]"
+                    />
+                </div>
+                <div className="py-5">
+                    <label className="px-2">Color:</label>
+                    <input type="text"
+                    required
+                    value = {color}
+                    onChange={(e) => setColor(e.target.value)}
+                    className="bg-[#e2e8f0]"
+                    />
+                </div>
+                <div>
+                    <label className="px-2">Condition:</label>
+                    <input type="text"
+                    required
+                    value = {condition}
+                    onChange={(e) => setCondition(e.target.value)}
+                    className="bg-[#e2e8f0]"
+                    />
+                </div>
+                <div className="py-5">
+                    <label className="px-2">Status:</label>
+                    <input type="text"
+                    required
+                    value = {saleState}
+                    onChange={(e) => setSaleState(e.target.value)}
                     className="bg-[#e2e8f0]"
                     />
                 </div>
