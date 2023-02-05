@@ -15,15 +15,18 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'  
 
-# Gets all listings TODO - allow arguments for more advanced searches ie jackets, shoes...
-@app.route('/listings', methods=['GET'])
+
+@app.route('/listings', methods=['GET','POST'])
 def view_listings():
 
     current_listings = []
 
-    if request.method == 'GET':
+    if request.method == 'POST':
+
+        # TODO - Text technologies functionality to find relevant results from search 
+        query = request.json['query']
+
         for listing in appCollection['listings'].find():
-            print("hello")
             new_data =  {
                 "name" : listing["name"],
                 "price" : "£" + str(listing["price"]),
@@ -33,38 +36,6 @@ def view_listings():
                 "status" : listing["saleState"]
                 }
             current_listings.append(new_data)
-        return current_listings
-
-# Gets all listings TODO - allow arguments for more advanced searches ie jackets, shoes...
-@app.route('/listings/{address}', methods=['GET'])
-def view_listings_address(address):
-    if request.method=='GET':
-        current_listings = []
-        print(address)
-        # Get all listings and add to list
-        if (len(address)!=0):
-            for listing in appCollection['listings'].find("seller" == address):
-                new_data =  {
-                    "name" : listing["name"],
-                    "price" : "£" + str(listing["price"]),
-                    "itemType" : listing["itemType"],
-                    "color" : listing["colour"],
-                    "condition" : "£" + str(listing["condition"]),
-                    "status" : listing["saleState"]
-                    }
-                current_listings.append(new_data)
-            else:
-                for listing in appCollection['listings'].find():
-                    print("hello")
-                    new_data =  {
-                        "name" : listing["name"],
-                        "price" : "£" + str(listing["price"]),
-                        "itemType" : listing["itemType"],
-                        "color" : listing["colour"],
-                        "condition" : "£" + str(listing["condition"]),
-                        "status" : listing["saleState"]
-                        }
-                    current_listings.append(new_data)
         return current_listings
   
 # Add functionality for POST requests for a new listing...
