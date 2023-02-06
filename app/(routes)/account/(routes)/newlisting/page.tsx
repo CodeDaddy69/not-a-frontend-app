@@ -46,6 +46,14 @@ const NewListingPage = () => {
             body: JSON.stringify(listing),
           });
 
+        const res2 = await fetch('http://127.0.0.1:5000/newlisting', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(listing),
+        });
+
         console.log(res.body)
     }
 
