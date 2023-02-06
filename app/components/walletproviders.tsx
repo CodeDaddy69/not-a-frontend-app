@@ -9,6 +9,8 @@ import { ReactNode, useCallback, useMemo } from "react";
 
 const WalletContextProvider = ( { children }: { children: ReactNode} ) => {
 
+    console.log("wallet context code running")
+
     const network = WalletAdapterNetwork.Devnet;
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 

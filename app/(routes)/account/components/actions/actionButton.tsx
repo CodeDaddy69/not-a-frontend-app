@@ -1,6 +1,5 @@
-// 'use client'
-
-import updateState from "./lib/updateState";
+import Link from "next/link";
+import updateState from "../../lib/updateState";
 
 const ActionButton = ( { program, listing } ) => {
 
@@ -13,24 +12,21 @@ const ActionButton = ( { program, listing } ) => {
     if (listing.escrow.escrowState === "sellerSent") {
 
         if (listing.seller === program.provider.publicKey.toString()) {
-            return <> awaiting response...</>
+            return <>shouldnt be displayed</>
         }
 
         return (
-        <>
-            <button className="hover:underline"
+        <div className="flex justify-around">
+            <button className="text-[16px] font hover:scale-110 active:scale-100 border-2 border-black rounded p-2"
             onClick={() => {
                 handleClick(false)
             }}>
-                Item Received
+                item received
             </button>
-            <button className="hover:underline"
-            onClick={() => {
-                handleClick(true)
-            }}>
-                Start Dispute
-            </button>
-        </>)
+            <Link className="text-[16px] font hover:scale-110 active:scale-100 border-2 border-black rounded p-2" href={`/account/startdispute/${listing.listing}`}>
+                start dispute
+            </Link>
+        </div>)
     }
 
     if (listing.escrow.escrowState === "buyerSent") {
@@ -40,7 +36,7 @@ const ActionButton = ( { program, listing } ) => {
         }
 
         return ( 
-            <button className="hover:underline"
+            <button className="flex m-auto text-[16px] font hover:scale-110 active:scale-100 border-2 border-black rounded p-2"
             onClick={() => {
                 handleClick()
             }}>
@@ -49,7 +45,7 @@ const ActionButton = ( { program, listing } ) => {
         );
     }
 
-    return <> no action</>
+    return <>no action</>
 }
  
 export default ActionButton;

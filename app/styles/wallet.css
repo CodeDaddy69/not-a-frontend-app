@@ -4,6 +4,9 @@
  }
   
  .wallet-button:hover {
-   border: 2px solid grey !important;
-   color: white !important;
+   color: black !important;
  }
+
+ .wallet-adapter-button:not([disabled]):hover {
+  background-color: #f9e69b;
+}

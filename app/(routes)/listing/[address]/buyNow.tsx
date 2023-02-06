@@ -1,6 +1,6 @@
 'use client'
 
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 import getProgram from "../../../lib/walletContext/getProgram";
 import { buyListing } from "./lib/buyerSend";
 import idl from '../../../lib/idl/idl.json';
@@ -14,6 +14,7 @@ interface listingProps {
 
 const BuyButton = ( { price, listing, seller }: listingProps ) => {
 
+    const { connected } = useWallet()
     const wallet = useAnchorWallet();
     const program = getProgram(idl, address.address, wallet);
 
@@ -44,8 +45,8 @@ const BuyButton = ( { price, listing, seller }: listingProps ) => {
           });
         console.log(res);
     }
-     
-    return (<button className=" hover:underline" onClick={handleClick}>Buy now</button>);
+
+    return (<button className="rounded-full border-black border-2 px-4 hover:scale-110 active:scale-100 font-semibold" onClick={handleClick} disabled={!connected}>Buy now</button>);
 }
  
 export default BuyButton;
