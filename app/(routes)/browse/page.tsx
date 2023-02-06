@@ -1,40 +1,54 @@
+'use client'
+
+import styles from '../mylistings/styles/mylistings.module.css'
+import buttonstyles from '../../styles/buttons.module.css';
 import Link from "next/link";
-import Image from 'next/image';
-import testImage from '../../../public/me.png';
+import { useState } from "react";
+
+const BrowsePage = () => {
+
+    const [search, setSearch] = useState("");
 
 
-// Python backend fetch via flask 
-const getFlask = async () => {
-    const res = await fetch("http://localhost:5000/listings");
-    return await res.json()
-}
+    // This is called when the form is filled in by the seller which writes to boockchain and our mongoDB. 
+    const handleSubmit = async (e) => {
 
-const BrowsePage = async () => {
+        const listing = {
+            query: search
+        };
 
-    const flaskData = await getFlask();
+        const res2 =  fetch(`http://localhost:5000/listings`,{
+            'method':'POST',
+                headers : {
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(listing)
+        })
+        .then(response => response.json())
+        .catch(error => console.log(error))
 
-    if (flaskData.length === 0) return <div>no listings to show</div>
+        console.log(res2);
 
-    return (
-        <div className="p-4 bg-amber-100">
-            <ul className="flex space-x-4">
-                {flaskData.map((listing) => 
-                <li key={listing.listing}>
-                    <div className="flex-col bg-white rounded hover:scale-105">
-                        <Link href={`/listing/${listing.listing}`}>
-                            <div className="p-2">
-                                <Image className="rounded" src={testImage} alt="test" width={150} />
-                                <h1 className="text-lg">{listing.name}</h1>
-                                <div className="flow-root w-full">
-                                    <h1 className="float-left">type: {listing.itemType}</h1>
-                                    <h1 className="float-right">${listing.price}</h1>
-                                </div>
-                            </div>
-                        </Link>
-                    </div>
-                </li>
-                )}
-            </ul>
+        //Here I can add the java script to list the results!
+
+    }
+
+    return(
+        <div>
+        <form onSubmit={handleSubmit} className="h-screen">
+            <div>
+                <label className="px-2">Search the Beanz style: </label>
+                <input type="text"
+                required
+                value = {search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="bg-[#e2e8f0]"
+                />
+            </div>
+            <div className="px-2">
+                <button className="bg-[#e2e8f0]">Search</button>
+            </div>
+        </form>
         </div>
     )
 }
