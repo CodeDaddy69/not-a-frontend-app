@@ -5,6 +5,8 @@ import getProgram from "../../../lib/walletContext/getProgram";
 import { buyListing } from "./lib/buyerSend";
 import idl from '../../../lib/idl/idl.json';
 import address from '../../../lib/idl/idl_address.json';
+import { useState } from "react";
+import { Collapse } from "react-collapse";
 
 interface listingProps {
     price: string,
@@ -14,11 +16,19 @@ interface listingProps {
 
 const BuyButton = ( { price, listing, seller }: listingProps ) => {
 
+    const [ hasClicked, setHasClicked ] = useState(false)
+
     const { connected } = useWallet()
     const wallet = useAnchorWallet();
     const program = getProgram(idl, address.address, wallet);
 
     const handleClick = async () => {
+        if (!hasClicked) {
+            setHasClicked(true)
+            console.log("clicked!")
+            return;
+        };
+
         if (!program) return;
 
         const escrowAddress = await buyListing({ program, listingDetails: { price: Number(price), listing, seller }});
@@ -46,7 +56,25 @@ const BuyButton = ( { price, listing, seller }: listingProps ) => {
         console.log(res);
     }
 
-    return (<button className="rounded-full border-black border-2 px-4 hover:scale-110 active:scale-100 font-semibold" onClick={handleClick} disabled={!connected}>Buy now</button>);
+    return (
+    <div className="flex flex-col items-center space-y-2">
+        <Collapse isOpened={hasClicked}>
+            <div className="flex flex-col p-4 rounded shadow bg-amber-100" action="">
+                <label>shipping details:</label>
+                <div className="h-32">
+                    <textarea className="border-2 border-black resize-none" rows={4}/>
+                </div>
+                <label>note for buyer:</label>
+                <div className="h-16">
+                    <textarea className="border-2 border-black resize-none"/>
+                </div>
+            </div>
+        </Collapse>
+        <button className="flex px-4 font-semibold border-2 border-black rounded-full hover:scale-110 active:scale-100" onClick={handleClick} disabled={!connected}>
+            Buy now
+        </button>
+    </div>
+    );
 }
  
 export default BuyButton;

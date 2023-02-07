@@ -22,11 +22,9 @@ const ListingPage = async ( { params }: pageProps ) => {
             <div className='flex justify-center'>
                 <Image className="" src={testImage} alt="test" width={350} />
             </div>
-            <div className='flex flex-col justify-center items-center'>
-                <div className="flex-1 text-xl font-semibold top-0">{listing.name}</div>
-                <div className='flex space-x-10'>
-                    <div className='text-xl'>{listing.saleState}:    ${listing.price}</div>
-                    {(listing?.saleState === 'for sale') ? 
+            <div className='flex flex-col items-center justify-center'>
+                <div className="top-0 flex-1 text-xl font-semibold">{listing.name}</div>
+                {(listing?.saleState === 'for sale') ? 
                     <BuyButton
                     listing={listing.listing}
                     price={listing.price}
@@ -34,6 +32,8 @@ const ListingPage = async ( { params }: pageProps ) => {
                     />
                     :
                     <></>}
+                <div className='flex space-x-10'>
+                    <div className='text-xl'>{listing.saleState}:    ${listing.price}</div>
                 </div>
                 <div>seller: {listing.seller}</div>
             </div>
