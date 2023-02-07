@@ -5,7 +5,12 @@ import testImage from '../../../public/me.png';
 
 // Python backend fetch via flask 
 const getFlask = async () => {
-    const res = await fetch("http://localhost:5000/listings");
+    const res = await fetch("http://127.0.0.1:5000/listings", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
     return await res.json()
 }
 
@@ -13,6 +18,7 @@ const ExampleListing = async () => {
 
     const flaskData = await getFlask();
 
+    console.log(flaskData)
     if (flaskData.length === 0) return <div>no listings to show</div>
 
     return (

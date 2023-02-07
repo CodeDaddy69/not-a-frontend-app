@@ -31,7 +31,7 @@ function SearchBar() {
 
     return(
         <div>
-        <form onSubmit={handleSubmit} className="h-screen">
+        <form onSubmit={handleSubmit} className="flex items-center justify-center py-4 m-auto space-x-2">
             <div>
                 <label className="px-2">Search the Beanz style: </label>
                 <input type="text"
@@ -41,8 +41,8 @@ function SearchBar() {
                 className="bg-[#e2e8f0]"
                 />
             </div>
-            <div className="px-2">
-                <button className="bg-[#e2e8f0]">Search</button>
+            <div>
+                <button className="p-2 rounded-full bg-amber-100">Search</button>
             </div>
         </form>
         </div>)

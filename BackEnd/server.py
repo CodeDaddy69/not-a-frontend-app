@@ -29,13 +29,28 @@ def view_listings():
         for listing in appCollection['listings'].find():
             new_data =  {
                 "name" : listing["name"],
-                "price" : "£" + str(listing["price"]),
+                "price" : str(listing["price"]),
                 "itemType" : listing["itemType"],
                 "color" : listing["colour"],
                 "condition" : "£" + str(listing["condition"]),
                 "status" : listing["saleState"]
                 }
             current_listings.append(new_data)
+
+    # TO ADAM: feel free to remove - im only adding this here so the browse page works
+    if request.method == 'GET':
+        for listing in appCollection['listings'].find():
+            new_data =  {
+                "listing" : listing["listing"],
+                "name" : listing["name"],
+                "price" : str(listing["price"]),
+                "itemType" : listing["itemType"],
+                "color" : listing["colour"],
+                "condition" : str(listing["condition"]),
+                "status" : listing["saleState"]
+                }
+            current_listings.append(new_data)
+
         return current_listings
   
 # Add functionality for POST requests for a new listing...
