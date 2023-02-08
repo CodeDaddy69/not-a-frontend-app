@@ -1,8 +1,16 @@
 from pymongo import MongoClient
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 import datetime
 from mongoServices import *
 from flask_cors import CORS, cross_origin
+from ecdsa import SigningKey
+from Signing import veryify_me
+
+# private_key = SigningKey.generate() # uses NIST192p
+# signature = private_key.sign(b"Educative authorizes this shot")
+# print(signature)
+# public_key = private_key.verifying_key
+# print("Verified:", public_key.verify(signature, b"Educative authorizes this shot"))
 
 # Connection to mongoDB from mongoServices module
 client = get_database("mongodb://localhost:27017/myApp")
@@ -14,6 +22,29 @@ appCollection = client['myApp']
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'  
+
+# To be changed of course, this allows flask to encrypt all session data!
+app.secret_key = 'LyndonBumCheese'
+
+# Here we initiate cookie and send response back to front end to store!
+# This function should check the authentication against the users public key on phnatom wallet then create session and send back session 
+# key if authentic
+@app.route('/setCookie', methods=['POST'])
+def setCookie():
+
+    if request.method == 'POST':
+        signature = request.json['Signature']
+        pubKey = request.json['PubKey']
+        message = request.json['message']
+
+        # print(pubKey)
+        # print(signature)
+        # print(message)
+        res = veryify_me(pubKey, message, signature)
+
+        print(res)
+
+        return {"verified" : res}
 
 
 @app.route('/listings', methods=['GET','POST'])
