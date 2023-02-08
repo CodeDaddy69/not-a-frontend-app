@@ -7,8 +7,8 @@ const ActionExtraInfo = ( { listing, program } ) => {
         case "buyerSent":
             if(program.provider.publicKey.toBase58() === listing.seller) {
                 content = <div className="flex py-6">
-                    <div className="w-1/3">note from buyer note from buyer note from buyer note from buyer</div>
-                    <div className="w-1/3">shipping details: <br />5 cameron elder street<br /> jewsville</div>
+                    <div className="w-1/3">{listing.escrow.note}</div>
+                    <div className="w-1/3 whitespace-pre-wrap"><p>shipping details:<br/>{listing.escrow.shipping}</p></div>
                     <div className="text-right">
                         <ActionButton program={program} listing={listing} />
                     </div>

@@ -16,9 +16,11 @@ interface listingProps {
 
 const BuyButton = ( { price, listing, seller }: listingProps ) => {
 
-    const [ hasClicked, setHasClicked ] = useState(false)
+    const [ hasClicked, setHasClicked ] = useState(false);
+    const [ shipping, setShipping ] = useState("");
+    const [ note, setNote ] = useState("");
 
-    const { connected } = useWallet()
+    const { connected } = useWallet();
     const wallet = useAnchorWallet();
     const program = getProgram(idl, address.address, wallet);
 
@@ -41,7 +43,9 @@ const BuyButton = ( { price, listing, seller }: listingProps ) => {
                 escrow: { 
                     address: escrowAddress.toBase58(),
                     buyer: wallet.publicKey.toBase58(),
-                    escrowState: "buyerSent"
+                    escrowState: "buyerSent",
+                    shipping: shipping,
+                    note: note
                 }
             }
         }
@@ -52,21 +56,29 @@ const BuyButton = ( { price, listing, seller }: listingProps ) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(update),
-          });
+        });
+
         console.log(res);
     }
 
     return (
     <div className="flex flex-col items-center space-y-2">
         <Collapse isOpened={hasClicked}>
-            <div className="flex flex-col p-4 rounded shadow bg-amber-100" action="">
+            <div className="flex flex-col p-4 rounded shadow bg-amber-100">
                 <label>shipping details:</label>
                 <div className="h-32">
-                    <textarea className="border-2 border-black resize-none" rows={4}/>
+                    <textarea className="border-2 border-black resize-none" 
+                    rows={4}
+                    value = {shipping}
+                    onChange = {e => setShipping(e.target.value)}
+                    />
                 </div>
                 <label>note for buyer:</label>
                 <div className="h-16">
-                    <textarea className="border-2 border-black resize-none"/>
+                    <textarea className="border-2 border-black resize-none"
+                    value = {note}
+                    onChange = {e => setNote(e.target.value)}
+                    />
                 </div>
             </div>
         </Collapse>
