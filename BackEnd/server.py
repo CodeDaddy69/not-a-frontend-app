@@ -44,7 +44,10 @@ def setCookie():
 
         print(res)
 
-        return {"verified" : res}
+        response = jsonify({"verified" : res})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+
+        return response
 
 
 @app.route('/listings', methods=['GET','POST'])
