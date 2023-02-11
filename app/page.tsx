@@ -25,7 +25,6 @@ export default function Home() {
           console.log(signature);
 
           const pak = {
-            // "Signature" : bs58.encode(signature),
             "Signature" : signature,
             "PubKey" : publicKey.toBase58(),
             "message" : "Hello, world!"

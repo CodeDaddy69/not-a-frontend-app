@@ -66,7 +66,7 @@ def view_listings():
                 "price" : str(listing["price"]),
                 "itemType" : listing["itemType"],
                 "color" : listing["colour"],
-                "condition" : "£" + str(listing["condition"]),
+                "condition" : str(listing["condition"]),
                 "status" : listing["saleState"]
                 }
             current_listings.append(new_data)

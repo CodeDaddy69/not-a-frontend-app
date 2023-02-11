@@ -32,7 +32,10 @@ export default function AccountPage() {
     return ( 
         <div>
             <div className="flex justify-center p-4 text-[22px]">Account Page</div>
-            <div className="flex bg-amber-100 rounded-full mx-auto w-[600px] shadow-lg p-10 border-2 border-black mb-10"><p className="mx-auto text-xl">profile pic and name go here</p></div>
+            <div className="flex bg-amber-100 rounded-full mx-auto w-[600px] shadow-lg p-10 border-2 border-black mb-10">                <p className="mx-auto text-xl">
+                    profile pic and name go here
+                </p>
+            </div>
             <StatsProfile/>
             <div className="flex justify-center p-4 space-x-10">
                 <button className="flex font-semibold hover:scale-110 active:scale-100" onClick={() => {
