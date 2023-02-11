@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useWallet } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
 import React, { FC, useCallback } from 'react';
-import { sign } from 'tweetnacl';
 
 
 
@@ -26,8 +25,9 @@ export default function Home() {
           console.log(signature);
 
           const pak = {
-            "Signature" : bs58.encode(signature),
-            "PubKey" : publicKey,
+            // "Signature" : bs58.encode(signature),
+            "Signature" : signature,
+            "PubKey" : publicKey.toBase58(),
             "message" : "Hello, world!"
           }
           
@@ -39,7 +39,7 @@ export default function Home() {
               },
               body: JSON.stringify(pak),
             });
-            return await res2.json;
+            return res2.json;
           }
 
           const resp = await getAuth();

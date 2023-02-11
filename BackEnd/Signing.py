@@ -1,5 +1,4 @@
 from nacl.signing import VerifyKey
-from solana.publickey import PublicKey
 import sys
 
 # Kill me now 
@@ -9,15 +8,17 @@ import base58
 
 def veryify_me(publickey, message, signature):
 
-    pubkey = bytes(PublicKey(publickey))
+    pubkey = base58.b58decode(publickey)
+    print(signature)
     msg = bytes(message, 'utf8')
-    signed = bytes(signature, 'utf8')
-
+    signed = bytes(signature["data"])
+    
     result = VerifyKey(
         pubkey
     ).verify(
         smessage=msg,  
-        signature=base58.b58decode(signed)
+        # signature=base58.b58decode(signed)
+        signature=signed
     )
 
     print(result.decode())

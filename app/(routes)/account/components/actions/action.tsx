@@ -4,7 +4,7 @@ import { BiChevronDown, BiChevronUp } from "react-icons/bi"
 import { Collapse } from "react-collapse";
 import ActionExtraInfo from "./actionExtraInfo";
 
-const Action = ( { toggle, isOpen, program, listing } ) => {
+const Action = ( { toggle, isOpen, program, listing, mutate } ) => {
     
     const timeLeft = formatTimeLeft(listing.timeLastAction)
 
@@ -35,7 +35,7 @@ const Action = ( { toggle, isOpen, program, listing } ) => {
                     <ActionButton program={program} listing={listing} />
                 </div>
             </div> */}
-            <ActionExtraInfo listing={listing} program={program}/>
+            <ActionExtraInfo listing={listing} program={program} mutate={mutate}/>
         </Collapse>
         </div>
     </div>);

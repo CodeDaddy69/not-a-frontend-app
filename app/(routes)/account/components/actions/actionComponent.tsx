@@ -13,7 +13,7 @@ const ActionsPage = () => {
     
     const wallet = useAnchorWallet();
     const program = getProgram(idl, address.address, wallet);
-    const { data, error, isLoading } = useSWR(`/api/getActions/${wallet?.publicKey.toString()}`, fetcher);
+    const { data, mutate, isLoading } = useSWR(`/api/getActions/${wallet?.publicKey.toString()}`, fetcher);
 
     let dataSelling = [];
     let dataBuying = [];
@@ -32,27 +32,25 @@ const ActionsPage = () => {
     }
 
     return (
-        <div className="flex-col 
-        items-center justify-center text-center">
+        <div className="flex-col items-center justify-center text-center">
             {isLoading ? <div className="m-auto">loading actions...</div> :
             <div>
-                <h1 className="border-b-2 border-black p-2">under sale</h1>
+                <h1 className="p-2 border-b-2 border-black">under sale</h1>
                 {/* selling */}
-                <ActionsList program={program} data={dataSelling}/>
-                <h1 className="border-b-2 border-t-2 border-black p-2">under purchase</h1>
+                <ActionsList program={program} data={dataSelling} mutate={mutate}/>
+                <h1 className="p-2 border-t-2 border-b-2 border-black">under purchase</h1>
                 {/* buying */}
-                <ActionsList program={program} data={dataBuying}/>
+                <ActionsList program={program} data={dataBuying} mutate={mutate}/>
             </div>
             }
         </div>
      );
     // return (
-    //     <div className="flex-col 
-    //     items-center justify-center text-center">
-    //         <h1 className="border-b-2 border-black p-2">under sale</h1>
+    //     <div className="flex-col items-center justify-center text-center //">
+    //         <h1 className="p-2 border-b-2 border-black">under sale</h1>
     //         <ActionsListSelling toggle={toggle} isOpen={isOpen} 
     //         program={program} data={data} isLoading={isLoading}/>
-    //         <h1 className="border-b-2 border-t-2 border-black p-2">under purchase</h1>
+    //         <h1 className="p-2 border-t-2 border-b-2 border-black">under purchase</h1>
     //         <ActionsListBuying toggle={toggle} isOpen={isOpen} 
     //         program={program} data={data} isLoading={isLoading}/>
     //     </div>

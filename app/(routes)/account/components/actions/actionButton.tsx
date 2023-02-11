@@ -1,11 +1,12 @@
 import Link from "next/link";
 import updateState from "../../lib/updateState";
 
-const ActionButton = ( { program, listing } ) => {
+const ActionButton = ( { program, listing, mutate } ) => {
 
     const handleClick = async ( dispute?: boolean ) => {
         await updateState({ program, listing, dispute });
         console.log("state updated")
+        mutate();
     }
     
 
