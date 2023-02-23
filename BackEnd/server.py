@@ -1,10 +1,13 @@
 from pymongo import MongoClient
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session, make_response
+from markupsafe import escape
 import datetime
 from mongoServices import *
 from flask_cors import CORS, cross_origin
 from ecdsa import SigningKey
 from Signing import veryify_me
+from essential_generators import DocumentGenerator
+from cors_resp import _build_cors_preflight_response, _corsify_actual_response
 
 # private_key = SigningKey.generate() # uses NIST192p
 # signature = private_key.sign(b"Educative authorizes this shot")
@@ -17,37 +20,51 @@ client = get_database("mongodb://localhost:27017/myApp")
 
 # This connect to the database colleciton for our the App, to access specific database we must call one further index!
 appCollection = client['myApp']
-  
+
 # Initializing flask app
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, resources={r"/setCookie": {"origins": "*"},r"/getAuthMsg": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'  
 
 # To be changed of course, this allows flask to encrypt all session data!
 app.secret_key = 'LyndonBumCheese'
 
+# Signing in messages 
+messageHolder = {}
+
 # Here we initiate cookie and send response back to front end to store!
 # This function should check the authentication against the users public key on phnatom wallet then create session and send back session 
 # key if authentic
-@app.route('/setCookie', methods=['POST'])
+@app.route('/setCookie', methods=['POST','OPTIONS'])
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def setCookie():
 
-    if request.method == 'POST':
-        signature = request.json['Signature']
-        pubKey = request.json['PubKey']
-        message = request.json['message']
+    signature = request.json['Signature']
+    pubKey = request.json['PubKey']
+    message = request.json['message']
+    
+    res = veryify_me(pubKey, message, signature)
 
-        # print(pubKey)
-        # print(signature)
-        # print(message)
-        res = veryify_me(pubKey, message, signature)
+    response = jsonify({"verified" : res})
 
-        print(res)
+    return response
 
-        response = jsonify({"verified" : res})
-        response.headers.add('Access-Control-Allow-Origin', '*')
+@app.route('/getAuthMsg/<pubKey>', methods=['GET','OPTIONS'])
+def getMsg(pubKey):
 
-        return response
+    if request.method == 'OPTIONS':
+
+        return _build_cors_preflight_response()
+    
+    if request.method == 'GET':
+        # Creates random sentence to be signed
+        gen = DocumentGenerator()
+        sentence = gen.sentence()
+
+        response = jsonify({"authMsg" : sentence})
+
+        return _corsify_actual_response(response)
+
 
 
 @app.route('/listings', methods=['GET','POST'])

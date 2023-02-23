@@ -1,58 +1,88 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useWallet } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
 import React, { FC, useCallback } from 'react';
-
-
+import Popup from "./components/popup";
+import './styles/popup.css';
+import { setCookie, getCookie, getCookies, hasCookie, deleteCookie } from 'cookies-next';
 
 export default function Home() {
 
   const { publicKey, signMessage } = useWallet();
 
-  const onClick = async () => {
-      try {
-          // `publicKey` will be null if the wallet isn't connected
-          if (!publicKey) throw new Error('Wallet not connected!');
-          // `signMessage` will be undefined if the wallet doesn't support it
-          if (!signMessage) throw new Error('Wallet does not support message signing!');
+  const [isOpen, setIsOpen] = useState(false);
+  const [doOnce, setDoOnce] = useState(true);
+  const [sessionCookie, setHasCookie] = useState(false);
 
-          // Encode anything as bytes
-          const message = new TextEncoder().encode('Hello, world!');
-          // Sign the bytes using the wallet
-          const signature = await signMessage(message);
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
 
-          console.log(signature);
+  const phantomAuth = async () => {
 
-          const pak = {
-            "Signature" : signature,
-            "PubKey" : publicKey.toBase58(),
-            "message" : "Hello, world!"
-          }
-          
-          const getAuth = async () => {
-            const res2 = await fetch('http://127.0.0.1:5000/setCookie', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(pak),
-            });
-            return res2.json;
-          }
+    try {
 
-          const resp = await getAuth();
-          console.log(resp);
+      const getMsg = async () => {
+        const res2 = await fetch('http://127.0.0.1:5000/getAuthMsg/'+publicKey, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+        });
+        return res2.json();
+      }
+
+      const uidMsg = await getMsg();
+
+      // Encode anything as bytes
+      const message = new TextEncoder().encode(uidMsg['authMsg']);
+      // Sign the bytes using the wallet
+      const signature = await signMessage(message);
+
+      const pak = {
+        "Signature" : signature,
+        "PubKey" : publicKey,
+        "message" : uidMsg['authMsg']
+      }
+    
+      const getAuth = async () => {
+        const res2 = await fetch('http://127.0.0.1:5000/setCookie', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(pak),
+        });
+        return res2.json();
+      }
+
+      const resp = await getAuth();
+      console.log(resp);
 
           alert(`Message signature: ${bs58.encode(signature)}`);
       } catch (error: any) {
           alert(`Signing failed: ${error?.message}`);
       }
+    }
+
+  if (publicKey && doOnce && !sessionCookie){
+    togglePopup();
+    setDoOnce(false);
+    setHasCookie(true);
+
   }
 
   return(
     <div>
-      <button onClick = {onClick}>Sign</button>
+      {isOpen && <Popup
+      content={
+      <>
+        <button onClick={phantomAuth}>AUTHENTICATE ME</button>
+      </>
+      }
+      handleClose={togglePopup}
+    />}
     </div>
   )
 }

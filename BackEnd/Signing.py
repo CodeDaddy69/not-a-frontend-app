@@ -8,9 +8,11 @@ import base58
 
 def veryify_me(publickey, message, signature):
 
+    print(message)
+
     pubkey = base58.b58decode(publickey)
     msg = bytes(message, 'utf8')
-    signed = bytes(signature["data"])
+    signed = bytes(signature['data'])
     
     result = VerifyKey(
         pubkey
