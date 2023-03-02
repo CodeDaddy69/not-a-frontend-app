@@ -1,13 +1,16 @@
 from pymongo import MongoClient
-from flask import Flask, request, jsonify, session, make_response
+from flask import Flask, request, jsonify, make_response
 from markupsafe import escape
-import datetime
 from mongoServices import *
 from flask_cors import CORS, cross_origin
 from ecdsa import SigningKey
 from Signing import veryify_me
 from essential_generators import DocumentGenerator
 from cors_resp import _build_cors_preflight_response, _corsify_actual_response
+from datetime import timedelta
+import jwt
+from datetime import datetime, timedelta
+from functools import wraps
 
 # private_key = SigningKey.generate() # uses NIST192p
 # signature = private_key.sign(b"Educative authorizes this shot")
@@ -16,21 +19,40 @@ from cors_resp import _build_cors_preflight_response, _corsify_actual_response
 # print("Verified:", public_key.verify(signature, b"Educative authorizes this shot"))
 
 # Connection to mongoDB from mongoServices module
-client = get_database("mongodb://localhost:27017/myApp")
+client = get_database("mongodb://localhost:27017")
 
 # This connect to the database colleciton for our the App, to access specific database we must call one further index!
-appCollection = client['myApp']
+database = client['myApp']
 
 # Initializing flask app
 app = Flask(__name__)
 cors = CORS(app, resources={r"/setCookie": {"origins": "*"},r"/getAuthMsg": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'  
+app.config['SECRET_KEY'] = 'secret_key'
 
-# To be changed of course, this allows flask to encrypt all session data!
-app.secret_key = 'LyndonBumCheese'
-
-# Signing in messages 
-messageHolder = {}
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        # jwt is passed in the request header
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
+        # return 401 if token is not passed
+        if not token:
+            return jsonify({'message' : 'Token is missing !!'}), 401
+  
+        try:
+            # decoding the payload to fetch the stored details
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+            user = data['public_id']
+        except:
+            return jsonify({
+                'message' : 'Token is invalid !!'
+            }), 401
+        # returns the current logged in users context to the routes
+        return  f(user, *args, **kwargs)
+  
+    return decorated
 
 # Here we initiate cookie and send response back to front end to store!
 # This function should check the authentication against the users public key on phnatom wallet then create session and send back session 
@@ -45,9 +67,26 @@ def setCookie():
     
     res = veryify_me(pubKey, message, signature)
 
-    response = jsonify({"verified" : res})
+    if res == True:
 
-    return response
+        print("HELLO")
+
+        token = jwt.encode({
+            'public_id': pubKey,
+            'time' : datetime.utcnow(),
+            'message' : message 
+            'exp' : datetime.utcnow() + timedelta(minutes = 30)
+        }, app.config['SECRET_KEY'])
+
+        print(token)
+
+        return jsonify({'token' : token})
+
+    else: 
+
+        response = jsonify({"verified" : res})
+
+        return response
 
 @app.route('/getAuthMsg/<pubKey>', methods=['GET','OPTIONS'])
 def getMsg(pubKey):
@@ -120,6 +159,6 @@ def new_listing():
     
 # Running app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
 
   

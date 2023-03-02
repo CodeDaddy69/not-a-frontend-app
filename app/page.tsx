@@ -6,6 +6,7 @@ import React, { FC, useCallback } from 'react';
 import Popup from "./components/popup";
 import './styles/popup.css';
 import { setCookie, getCookie, getCookies, hasCookie, deleteCookie } from 'cookies-next';
+import { setAuthorityInstructionData } from "@solana/spl-token";
 
 export default function Home() {
 
@@ -58,7 +59,12 @@ export default function Home() {
       }
 
       const resp = await getAuth();
-      console.log(resp);
+
+      if (!hasCookie(publicKey)){
+        setCookie(publicKey,resp['token']);
+        togglePopup();
+        alert('Successfully signed in! Welcome :)');
+      }
 
           alert(`Message signature: ${bs58.encode(signature)}`);
       } catch (error: any) {
@@ -66,7 +72,7 @@ export default function Home() {
       }
     }
 
-  if (publicKey && doOnce && !sessionCookie){
+  if (publicKey && doOnce && !hasCookie(publicKey)){
     togglePopup();
     setDoOnce(false);
     setHasCookie(true);
